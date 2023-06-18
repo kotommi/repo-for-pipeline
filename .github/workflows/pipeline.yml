@@ -24,3 +24,13 @@ jobs:
               run: npm run test
             - name: build app
               run: npm run build
+    deploy_to_rendercom:
+        needs: [builds_and_passes_checks]
+        runs-on: ubuntu-20.04
+        steps:
+            - name: Deploy to render.com
+              uses: johnbeynon/render-deploy-action@v0.0.8
+              with:
+                service-id: ${{ secrets.RENDER_SERVICE_ID }}
+                api-key: ${{ secrets.RENDER_API_KEY }}
+

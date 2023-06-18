@@ -56,6 +56,10 @@ if (!inProduction) {
 
   app.use(express.static(DIST_PATH))
   app.get('*', (req, res) => res.sendFile(INDEX_PATH))
+
+  app.get('/version', (req, res) => {
+    res.send('v0.1')
+  })
 }
 
 app.listen(PORT, () => {
