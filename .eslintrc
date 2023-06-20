@@ -4,6 +4,11 @@
   "env": {
     "browser": true
   },
+  "globals": {
+    "cy": "readonly",
+    "describe": "readonly",
+    "it": "readonly"
+  },
   "rules": {
     "semi": [
       "error",
