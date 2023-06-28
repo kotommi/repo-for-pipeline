@@ -30,6 +30,22 @@ jobs:
                 command: npm run test:e2e
                 start: npm start
                 wait-on: http://localhost:8000
+    
+    tag_release:
+        name: Add version tag to releases that pass checks
+        needs: [builds_and_passes_checks]
+        runs-on: ubuntu-20.04
+        if: ${{ github.event_name == 'push' && !(contains(join(github.event.commits.*.message, ', '), '#skip')) }}
+        steps:
+          - uses: actions/checkout@v3
+            with: 
+              fetch-depth: '0'
+          - name: Bump version and add tag
+            uses: anothrNick/github-tag-action@1.64.0
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              DEFAULT_BUMP: patch
+
     deploy_to_rendercom:
         needs: [builds_and_passes_checks]
         runs-on: ubuntu-20.04
