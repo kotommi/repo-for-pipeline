@@ -70,19 +70,12 @@ jobs:
               with:
                 service-id: ${{ secrets.RENDER_SERVICE_ID }}
                 api-key: ${{ secrets.RENDER_API_KEY }}
-    notify:
-      needs: [builds_and_passes_checks, deploy_to_rendercom, tag_release]
-      name: Notify action status on Discord
-      runs-on: ubuntu-20.04
-      steps:
-        
-
-        - name: Pipeline cancelled
-          uses: rjstone/discord-webhook-notify@v1
-          if: cancelled()
-          with:
-            severity: warn
-            details: Pipeline cancelled
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+            - name: Notify if tests failed
+              uses: rjstone/discord-webhook-notify@v1
+              if: failure()
+              with:
+                  severity: error
+                  details: Deployment to render.com failed
+                  webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
 
