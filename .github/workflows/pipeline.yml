@@ -30,6 +30,21 @@ jobs:
                 command: npm run test:e2e
                 start: npm start
                 wait-on: http://localhost:8000
+            
+            - name: Notify if tests failed
+              uses: rjstone/discord-webhook-notify@v1
+              if: failure()
+              with:
+                severity: error
+                details: Tests failed
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+            - name: Pipeline success
+              uses: rjstone/discord-webhook-notify@v1
+              if: success()
+              with: 
+                severity: info
+                details: Pipeline succeeded
+                webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     
     tag_release:
         name: Add version tag to releases that pass checks
@@ -60,21 +75,8 @@ jobs:
       name: Notify action status on Discord
       runs-on: ubuntu-20.04
       steps:
-        - name: Pipeline success
-          uses: rjstone/discord-webhook-notify@v1
-          if: success()
-          with: 
-            severity: info
-            details: Pipeline succeeded
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        
 
-        - name: Pipeline failed
-          uses: rjstone/discord-webhook-notify@v1
-          if: failure()
-          with:
-            severity: error
-            details: Pipeline failed
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         - name: Pipeline cancelled
           uses: rjstone/discord-webhook-notify@v1
           if: cancelled()
