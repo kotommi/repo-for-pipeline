@@ -64,6 +64,7 @@ jobs:
     deploy_to_rendercom:
         needs: [builds_and_passes_checks]
         runs-on: ubuntu-20.04
+        if: ${{ github.event_name == 'push' }}     
         steps:
             - name: Deploy to render.com
               uses: johnbeynon/render-deploy-action@v0.0.8
