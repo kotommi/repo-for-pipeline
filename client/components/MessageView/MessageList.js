@@ -1,5 +1,16 @@
 import React from 'react'
 
+const liStyle = {
+  flexdirection: 'row',
+  margin: 5,
+  padding: 5,
+}
+
+const spacingStyle = {
+  margin: 5,
+  padding: 5,
+}
+
 const MessageList = ({ messages, deleteMessage }) => {
   if (!messages) return null
 
@@ -11,10 +22,12 @@ const MessageList = ({ messages, deleteMessage }) => {
     <ul>
       {messages.map((message) => (
         <li key={message.id}>
-          {message.body}
-          <button type="button" onClick={handleDelete(message)}>
-            delete
-          </button>
+          <div style={liStyle}>
+            {message.body}
+            <button style={spacingStyle} type="button" onClick={handleDelete(message)}>
+              delete
+            </button>
+          </div>
         </li>
       ))}
     </ul>
